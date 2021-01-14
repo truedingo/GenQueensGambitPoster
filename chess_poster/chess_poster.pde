@@ -31,7 +31,7 @@ void setup() {
   bKnight = loadImage("chess/black_knight.png");
   wBishop = loadImage("chess/white_bishop.png");
   bBishop = loadImage("chess/black_bishop.png");
-  wKing.resize(boardWidth/8, boardHeight/8);
+  wKing.resize(boardWidth/9, boardHeight/9);
   bKing.resize(boardWidth/8, boardHeight/8);
   wQueen.resize(boardWidth/8, boardHeight/8);
   bQueen.resize(boardWidth/8, boardHeight/8);
@@ -75,8 +75,6 @@ void showBoard() {
 void startPosition() {
   
   /* FAZER CLASS CHESS PIECE COM POS(X,Y)
-  board = new PImage[8][8];
-
   board[0][0] = bRook;
   bRook (0,0)
   wKnight(7,0)
@@ -86,12 +84,16 @@ void startPosition() {
   remove-la da lista de peças
   remover a imagem de 0, 0
   adicionar */
+  
+  board = new PImage[8][8];
+  
+  board[0][0] = bRook;
   board[0][1] = bKnight;
   board[0][2] = bBishop;
   board[0][3] = bQueen;
   board[0][4] = bKing;
   board[0][5] = bBishop;
-  board[2][6] = bKnight;
+  board[0][6] = bKnight;
   board[0][7] = bRook;
   board[1][0] = bPawn;
   board[1][1] = bPawn;
