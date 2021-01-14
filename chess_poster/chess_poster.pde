@@ -27,7 +27,7 @@ long lastTime;
 void setup() {
   size(900, 600);
   background(0);
-  frameRate(0.5);
+  frameRate(1);
   noStroke();
   textSize(width/8);
   textAlign(CENTER);
@@ -85,11 +85,6 @@ void draw() {
 }
 
 void playOutGame(String game){
-  
-  if ( millis() - lastTime > timeToWait){
-    print("does it work here?");
-    lastTime = millis();
-  }
   String[] aux = split(game, " ");
   if(timer<aux.length){
     String seq = aux[timer].toLowerCase();
@@ -129,18 +124,13 @@ void playOutGame(String game){
         convert.append(convertPos);
       }
     }
-    print("sequence: " + seq + " converted into: " + convert + "\n");
     movePiece(convert);
-    print("passou\n");
     timer++;
-    print(timer+"\n");
   }
 }
 
 void movePiece(IntList chessMove){
-  print("chess move is" + chessMove + "\n");
   if(isCastle ==false){
-    print("entrei?");
     int s = chessMove.get(0);
     int t = chessMove.get(1);
     int ss = chessMove.get(2);
@@ -149,7 +139,21 @@ void movePiece(IntList chessMove){
     board[t][s] = null;
    }
    else{
-   
+     print(chessMove);
+    int s = chessMove.get(1);
+    int t = chessMove.get(2);
+    int ss = chessMove.get(3);
+    int tt = chessMove.get(4);
+    int s1 = chessMove.get(5);
+    int t1 = chessMove.get(6);
+    int ss1 = chessMove.get(7);
+    int tt1 = chessMove.get(8);
+    
+    board[tt][ss] = board[t][s];
+    board[t][s] = null;
+    board[tt1][ss1] = board[t1][s1];
+    board[t1][s1] = null;
+    isCastle = false;
    
    }
  }
