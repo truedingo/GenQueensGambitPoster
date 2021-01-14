@@ -10,11 +10,16 @@ PImage[][] board;
 //Garry Kasparov vs Boris Gulko - 12th Soviet Team Cup (1982) - 0-1
 String GarryKasparovVSBorisGulko = "D2d4 D7d5 C2c4 D5c4 E2e3 G8f6 F1c4 E7e6 G1f3 C7c5 0e1g1h1f1 A7a6 E3e4 B7b5 C3d3 C8b7 C1g5 C5d4 F3d4 B8d7 B1c3 D7e5 C3b5 E5d3 D1d3 A6b5 F1d1 F8e7 D3b5 D8d7 B5b3 B7e4 D4f5 E4d5 F5g7 E8f8 B3h3 H7h5 H3g3 F8g7 G5f6 G7f6 D1d4 E7d6 G3c3 F6g6 H2h3 D6c7";
 boolean check = false;
+boolean isCastle = false;
+
+int timer=0;
+
+int[][][] convertedGame = {{ {0,1},{0,2} }, { {0,1},{0,2} }};
 
 int boardWidth = 500;
 int boardHeight = 500;
 
-long timeToWait = 2000;// in miliseconds
+long timeToWait = 1000;// in miliseconds
 long lastTime;
 
 
@@ -22,6 +27,7 @@ long lastTime;
 void setup() {
   size(900, 600);
   background(0);
+  frameRate(0.5);
   noStroke();
   textSize(width/8);
   textAlign(CENTER);
@@ -69,23 +75,84 @@ void draw() {
  //line(10, 10, 10, 510);
  showBoard();
  
- if( millis() - lastTime > timeToWait){
-   if(check==false){
-     board[2][3] = board[0][0]; 
-     board[0][0] = null; 
-     check=true;
-     lastTime = millis();
-   }
- }
- 
-  if( millis() - lastTime > timeToWait){
+  /*if( millis() - lastTime > timeToWait){
     startPosition();
     lastTime = millis();
-    check=false;
-  }
+  }*/
+  playOutGame(GarryKasparovVSBorisGulko);
  
  
 }
+
+void playOutGame(String game){
+  
+  if ( millis() - lastTime > timeToWait){
+    print("does it work here?");
+    lastTime = millis();
+  }
+  String[] aux = split(game, " ");
+  if(timer<aux.length){
+    String seq = aux[timer].toLowerCase();
+    IntList convert = new IntList();
+    for(int j=0; j<seq.length(); j++){
+      char cmp = seq.charAt(j);
+      if(cmp == 'a'){
+        convert.append(0);
+      }
+      else if(cmp == 'b'){
+        convert.append(1);
+      }
+      else if(cmp == 'c'){
+        convert.append(2);
+      }
+      else if(cmp == 'd'){
+        convert.append(3);
+      }
+      else if(cmp == 'e'){
+        convert.append(4);
+      }
+      else if(cmp == 'f'){
+        convert.append(5);
+      }
+      else if(cmp == 'g'){
+        convert.append(6);
+      }
+      else if(cmp == 'h'){
+        convert.append(7);
+      }
+      else if(cmp == '0'){
+        convert.append(8);
+        isCastle=true;
+      }
+      else{
+        int convertPos = abs(int(cmp)-48 - 8);
+        convert.append(convertPos);
+      }
+    }
+    print("sequence: " + seq + " converted into: " + convert + "\n");
+    movePiece(convert);
+    print("passou\n");
+    timer++;
+    print(timer+"\n");
+  }
+}
+
+void movePiece(IntList chessMove){
+  print("chess move is" + chessMove + "\n");
+  if(isCastle ==false){
+    print("entrei?");
+    int s = chessMove.get(0);
+    int t = chessMove.get(1);
+    int ss = chessMove.get(2);
+    int tt = chessMove.get(3);
+    board[tt][ss] = board[t][s];
+    board[t][s] = null;
+   }
+   else{
+   
+   
+   }
+ }
 
 void showBoard() {
   for (int i = 0; i<8; i++)
