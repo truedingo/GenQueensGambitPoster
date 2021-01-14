@@ -1,3 +1,4 @@
+
 int down, right, down1, right1;//curr move, (down, right)starting pos   (down1,right1)ending pos
 int bestl = -1, bestk = -1, besti = -1, bestj = -1;
 int p0, p1, p01, p11;//prev move, for en passant
@@ -7,8 +8,13 @@ boolean promote;
 PImage wKing, bKing, wQueen, bQueen, wPawn, bPawn, wRook, bRook, wKnight, bKnight, wBishop, bBishop, positionText, positionNumber;
 PImage[][] board;
 
+boolean check = false;
+
 int boardWidth = 500;
 int boardHeight = 500;
+
+long timeToWait = 2000;// in miliseconds
+long lastTime;
 
 
 
@@ -31,35 +37,53 @@ void setup() {
   bKnight = loadImage("chess/black_knight.png");
   wBishop = loadImage("chess/white_bishop.png");
   bBishop = loadImage("chess/black_bishop.png");
-  wKing.resize(boardWidth/9, boardHeight/9);
-  bKing.resize(boardWidth/8, boardHeight/8);
-  wQueen.resize(boardWidth/8, boardHeight/8);
-  bQueen.resize(boardWidth/8, boardHeight/8);
-  wPawn.resize(boardWidth/8, boardHeight/8);
-  bPawn.resize(boardWidth/8, boardHeight/8);
-  wRook.resize(boardWidth/8, boardHeight/8);  
-  bRook.resize(boardWidth/8, boardHeight/8); 
-  wKnight.resize(boardWidth/8, boardHeight/8);
-  bKnight.resize(boardWidth/8, boardHeight/8);
-  wBishop.resize(boardWidth/8, boardHeight/8);  
-  bBishop.resize(boardWidth/8, boardHeight/8);
+  wKing.resize(boardWidth/11, boardHeight/11);
+  bKing.resize(boardWidth/11, boardHeight/11);
+  wQueen.resize(boardWidth/11, boardHeight/11);
+  bQueen.resize(boardWidth/11, boardHeight/11);
+  wPawn.resize(boardWidth/11, boardHeight/11);
+  bPawn.resize(boardWidth/11, boardHeight/11);
+  wRook.resize(boardWidth/11, boardHeight/11);  
+  bRook.resize(boardWidth/11, boardHeight/11); 
+  wKnight.resize(boardWidth/11, boardHeight/11);
+  bKnight.resize(boardWidth/11, boardHeight/11);
+  wBishop.resize(boardWidth/11, boardHeight/11);  
+  bBishop.resize(boardWidth/11, boardHeight/11);
   
   positionText = loadImage("chess/text.png");
   positionNumber = loadImage("chess/numbers.png");
   positionText.resize(boardWidth-(boardWidth/16)*2, 25);
   positionNumber.resize(20, boardHeight-(boardHeight/16)*2);
-
+  
+  lastTime = millis();
   startPosition();
-  showBoard();
+ 
 }
 void draw() {
   
  image(positionText, 5+(boardWidth/16) ,520);
  image(positionNumber, 520, 5+(boardHeight/16));
- stroke(255,0,0);
- strokeWeight(5);
- line(10, 10, 10, 510);
-
+ //stroke(255,0,0);
+ //strokeWeight(5);
+ //line(10, 10, 10, 510);
+ showBoard();
+ 
+ if( millis() - lastTime > timeToWait){
+   if(check==false){
+     board[2][3] = board[0][0]; 
+     board[0][0] = null; 
+     check=true;
+     lastTime = millis();
+   }
+ }
+ 
+  if( millis() - lastTime > timeToWait){
+    startPosition();
+    lastTime = millis();
+    check=false;
+  }
+ 
+ 
 }
 
 void showBoard() {
@@ -68,8 +92,18 @@ void showBoard() {
       if ((i+j)%2 == 0) fill(57, 57, 57);
       else fill(255, 255, 255);
       rect(i*(boardWidth/8)+10, j*(boardHeight/8)+10, (boardWidth/8), (boardHeight/8));//chessboard
-      if (board[j][i] != null) image(board[j][i], i*(boardWidth/8)+10, j*(boardHeight/8)+10);//piece
+      if (board[j][i] != null) image(board[j][i], i*(boardWidth/8)+18, j*(boardHeight/8)+20);//piece
     }
+}
+
+PImage[][] movePiece(){
+  
+  print("oi");
+  board[2][3] = board[0][0];
+  board[0][0] = null;
+  print(board[2][3]);
+  return board;
+
 }
 
 void startPosition() {
@@ -120,6 +154,6 @@ void startPosition() {
   board[6][5] = wPawn;
   board[6][6] = wPawn;
   board[6][7] = wPawn;
-
-  //global variables
+  
+  
 }
