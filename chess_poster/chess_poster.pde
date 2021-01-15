@@ -7,6 +7,7 @@ boolean check = false;
 boolean isCastle = false;
 boolean hasStarted = false;
 boolean isOver = false;
+boolean wtf = false;
 int indexGameChosen;
 String gameName;
 String gameStamp;
@@ -70,7 +71,7 @@ long lastTime;
 void setup() {
   size(1000, 600);
   background(0);
-  frameRate(1);
+  frameRate(10);
   noStroke();
   textSize(width/8);
   textAlign(CENTER);
@@ -187,7 +188,6 @@ void draw() {
    text(selectedTimestamp, 770, 180);
    textSize(12);
    text(selectedOpening, 770, 200);
-   //gameList.remove(indexGameChosen);
    hasStarted = true;
  }
  
@@ -257,9 +257,20 @@ void playOutGame(String game){
     movePieceSE.play();
     movePiece(convert);
     timer++;
-    if(timer == 4){
-      isOver=true;
-    }
+  }
+  else{
+    gameList.remove(indexGameChosen);
+    gameMovesList.remove(indexGameChosen);
+    gameMovesListDisplay.remove(indexGameChosen);
+    gameTimestamps.remove(indexGameChosen);
+    gameOpenings.remove(indexGameChosen);
+    timer=0;
+    background(0);
+    hasStarted=false;
+    posterText= true;
+    wtf=true;
+    startPosition();
+    showBoard();
   }
 }
 
@@ -302,17 +313,6 @@ void showBoard() {
 }
 
 void startPosition() {
-  
-  /* FAZER CLASS CHESS PIECE COM POS(X,Y)
-  board[0][0] = bRook;
-  bRook (0,0)
-  wKnight(7,0)
-  for piece in chesspiecelist:
-  if piece.pos == 0,0
-  pieceName = bRook
-  remove-la da lista de peças
-  remover a imagem de 0, 0
-  adicionar */
   
   board = new PImage[8][8];
   
