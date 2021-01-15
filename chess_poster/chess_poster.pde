@@ -1,15 +1,43 @@
 import processing.sound.*;
+import ddf.minim.*;
+
+
 SoundFile movePieceSE;
+
+AudioPlayer song;
+
+
+//Minim
+Minim minim;
+
 PFont font;
 PImage wKing, bKing, wQueen, bQueen, wPawn, bPawn, wRook, bRook, wKnight, bKnight, wBishop, bBishop, positionText, positionNumber;
 PImage[][] board;
 boolean isCastle = false;
 boolean hasStarted = false;
+boolean isPaused = false;
+boolean isFirstTime = true;
+int indexMusicChosen;
 int indexGameChosen;
 String gameName;
 String gameStamp;
 String gameOpening;
-int delayRestart=0;
+
+StringList songNames;
+String ost1Name = "Ceiling Games";
+String ost2Name = "Main Title";
+String ost3Name = "Methuen Home For Children 1957";
+String ost4Name = "You're Gloating ";
+
+String musicFrom = "The Queen's Gambit (Music from the Netflix Limited Series)";
+String musicAuthor = "Carlos Rafael Rivera";
+
+String ost1 = "soundtrack/CeilingGames.wav";
+String ost2 = "soundtrack/MainTitle.wav";
+String ost3 = "soundtrack/MethuenHomeForChildren1957.wav";
+String ost4 = "soundtrack/YouareGloating.wav";
+
+StringList shuffleMusic;
 
 int textTimer=0;
 
@@ -18,24 +46,24 @@ int textTimer=0;
 String GarryKasparovVSBorisGulko = "D2d4 D7d5 C2c4 D5c4 E2e3 G8f6 F1c4 E7e6 G1f3 C7c5 0e1g1h1f1 A7a6 E3e4 B7b5 C3d3 C8b7 C1g5 C5d4 F3d4 B8d7 B1c3 D7e5 C3b5 E5d3 D1d3 A6b5 F1d1 F8e7 D3b5 D8d7 B5b3 B7e4 D4f5 E4d5 F5g7 E8f8 B3h3 H7h5 H3g3 F8g7 G5f6 G7f6 D1d4 E7d6 G3c3 F6g6 H2h3 D6c7";
 String gkVSbgGameName = "Garry Kasparov vs Boris Gulko";
 String gkVSbgTimestamp = "12th Soviet Team Cup (1982), Kislovodsk URS, rd 2, Jun-??";
-String gkVSbgOpenings = "Queen's Gambit Accepted: Classical Defense. Russian Gambit (D27)";
+String gkVSbgOpenings = "Queen's Gambit Accepted: Classical Defense. Russian Gambit";
 String gkVSbgMoves = "d4 d5 c4 dxc4 e3 Nf6 Bxc4 e6 Nf3 c5 O-O a6 e4 b5 Bd3 Bb7 Bg5 cxd4 Nxd4 Nbd7 Nc3 Ne5 Ncxb5 Nxd3 Qxd3 axb5 Rfd1 Be7 Qxb5+ Qd7 Qb3 Bxe4 Nf5 Bd5 Nxg7+ Kf8 Qh3 h5 Qg3 Kxg7 Bxf6+ Kxf6 Rd4 Bd6 Qc3 Kg6 h3 Bc7";
-int gkVSbgResult = 1; //0 - white wins 1 - black wins, 2 - draw
+int gkVSbgResult = 1; //0 - white wins 1 - black wins
 
 String GarryKasparovVSBorisGulko1 = "D2d4 D7d5 C2c4 D5c4 E2e3 G8f6 F1c4 E7e6 G1f3 C7c5 0e1g1h1f1 A7a6 E3e4 B7b5 C3d3 C8b7 C1g5 C5d4 F3d4 B8d7 B1c3 D7e5 C3b5 E5d3 D1d3 A6b5 F1d1 F8e7 D3b5 D8d7 B5b3 B7e4 D4f5 E4d5 F5g7 E8f8 B3h3 H7h5 H3g3 F8g7 G5f6 G7f6 D1d4 E7d6 G3c3 F6g6 H2h3 D6c7";
 String gkVSbgGameName1 = "Dionysius Vashr vs Andrew Pelkazysr ";
 String gkVSbgTimestamp1 = "12th Soviet Team Cup (1982), Kislovodsk URS, rd 2, Jun-?? sample ";
-String gkVSbgOpenings1 = "Queen's Gambit Declined: Marshall Defense (D06)";
+String gkVSbgOpenings1 = "Queen's Gambit Declined: Marshall Defense";
 String gkVSbgMoves1 = "d4 d5 c4 dxc4 e3 Nf6 Bxc4 e6 Nf3 c5 O-O a6 e4 b5 Bd3 Bb7 Bg5 cxd4 Nxd4 Nbd7 Nc3 Ne5 Ncxb5 Nxd3 Qxd3 axb5 Rfd1 Be7 Qxb5+ Qd7 Qb3 Bxe4 Nf5 Bd5 Nxg7+ Kf8 Qh3 h5 Qg3 Kxg7 Bxf6+ Kxf6 Rd4 Bd6 Qc3 Kg6 h3 Bc7";
 
-int gkVSbgResult1 = 0; //0 - white wins 1 - black wins, 2 - draw
+int gkVSbgResult1 = 0; //0 - white wins 1 - black wins
 
 String GarryKasparovVSBorisGulko2 = "D2d4 D7d5 C2c4 D5c4 E2e3 G8f6 F1c4 E7e6 G1f3 C7c5 0e1g1h1f1 A7a6 E3e4 B7b5 C3d3 C8b7 C1g5 C5d4 F3d4 B8d7 B1c3 D7e5 C3b5 E5d3 D1d3 A6b5 F1d1 F8e7 D3b5 D8d7 B5b3 B7e4 D4f5 E4d5 F5g7 E8f8 B3h3 H7h5 H3g3 F8g7 G5f6 G7f6 D1d4 E7d6 G3c3 F6g6 H2h3 D6c7";
 String gkVSbgGameName2 = "Garry Kasparov vs Ana Guiomar";
 String gkVSbgTimestamp2 = "12th Soviet Team Cup (1982), Kislovodsk URS, rd 2, Jun-?? sampleeee ";
-String gkVSbgOpenings2 = "Queen's Gambit Declined: Modern. Knight Defense (D51)";
+String gkVSbgOpenings2 = "Queen's Gambit Declined: Modern. Knight Defense";
 String gkVSbgMoves2 = "d4 d5 c4 dxc4 e3 Nf6 Bxc4 e6 Nf3 c5 O-O a6 e4 b5 Bd3 Bb7 Bg5 cxd4 Nxd4 Nbd7 Nc3 Ne5 Ncxb5 Nxd3 Qxd3 axb5 Rfd1 Be7 Qxb5+ Qd7 Qb3 Bxe4 Nf5 Bd5 Nxg7+ Kf8 Qh3 h5 Qg3 Kxg7 Bxf6+ Kxf6 Rd4 Bd6 Qc3 Kg6 h3 Bc7";
-int gkVSbgResult2 = 0; //0 - white wins 1 - black wins, 2 - draw
+int gkVSbgResult2 = 0; //0 - white wins 1 - black wins
 
 //LISTS
 StringList gameList;
@@ -44,15 +72,6 @@ StringList gameMovesListDisplay;
 StringList gameTimestamps;
 StringList gameOpenings;
 IntList gameResults;
-
-
-
-/*
-1.d4 d5 2.c4 dxc4 3.e3 Nf6 4.Bxc4 e6 5.Nf3 c5 6.O-O a6 7.e4 b5
-8.Bd3 Bb7 9.Bg5 cxd4 10.Nxd4 Nbd7 11.Nc3 Ne5 12.Ncxb5 Nxd3
-13.Qxd3 axb5 14.Rfd1 Be7 15.Qxb5+ Qd7 16.Qb3 Bxe4 17.Nf5 Bd5
-18.Nxg7+ Kf8 19.Qh3 h5 20.Qg3 Kxg7 21.Bxf6+ Kxf6 22.Rd4 Bd6
-23.Qc3 Kg6 24.h3 Bc7*/
 
 
 int timer=0;
@@ -68,7 +87,7 @@ long lastTime;
 void setup() {
   size(1000, 600);
   background(0);
-  frameRate(5);
+  frameRate(10);
   noStroke();
   textSize(width/8);
   textAlign(CENTER);
@@ -143,70 +162,162 @@ void setup() {
   movePieceSE = new SoundFile(this, "soundtrack/move_piece.wav");
   font = createFont("font/mono.ttf", 20);
   textFont(font);
+  
+  
+  //minim = new Minim(this);
+  //song = minim.loadFile("soundtrack/MainTitle.wav");
+ 
+  
+  
+  songNames = new StringList();
+  songNames.append(ost1Name);
+  songNames.append(ost2Name);
+  songNames.append(ost3Name);
+  songNames.append(ost4Name);
+  
+  shuffleMusic = new StringList();
+  shuffleMusic.append(ost1);
+  shuffleMusic.append(ost2);
+  shuffleMusic.append(ost3);
+  shuffleMusic.append(ost4);
+
+
  
 }
 void draw() {
  //stroke(255,0,0);
  //strokeWeight(5);
  //line(10, 10, 10, 510);
- if(hasStarted == false){
-    image(positionText, 5+(boardWidth/16) ,520);
-    image(positionNumber, 520, 5+(boardHeight/16));
-   if(gameList.size() == 0){
-     print("EMPTY");
-     gameList.append(gkVSbgGameName);
-     gameList.append(gkVSbgGameName1);
-     gameList.append(gkVSbgGameName2);
+ 
+ //We need to generate a song for the first Time opening the program
+ if(isFirstTime == true){
+   int currLen = shuffleMusic.size();
+   indexMusicChosen = int(random(0, currLen));
+   minim = new Minim(this);
+   song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
+   song.play();
+   isFirstTime = false;
+ }
+ else{
+   if(!song.isPlaying()){
+     if(shuffleMusic.size() > 0){
+       song.close();
+       shuffleMusic.remove(indexMusicChosen);
+       songNames.remove(indexMusicChosen);
+       int currLen = shuffleMusic.size();
+       indexMusicChosen = int(random(0, currLen));
+       minim = new Minim(this);
+       song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
+       song.play();
+     }
+     else{
+       songNames = new StringList();
+       songNames.append(ost1Name);
+       songNames.append(ost2Name);
+       songNames.append(ost3Name);
+       songNames.append(ost4Name);
+      
+       shuffleMusic = new StringList();
+       shuffleMusic.append(ost1);
+       shuffleMusic.append(ost2);
+       shuffleMusic.append(ost3);
+       shuffleMusic.append(ost4);
+      
+       song.close();
+       shuffleMusic.remove(indexMusicChosen);
+       songNames.remove(indexMusicChosen);
+       int currLen = shuffleMusic.size();
+       indexMusicChosen = int(random(0, currLen));
+       minim = new Minim(this);
+       song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
+       song.play();
+      
      
-     gameOpenings.append(gkVSbgOpenings);
-     gameOpenings.append(gkVSbgOpenings1);
-     gameOpenings.append(gkVSbgOpenings2);
-    
-     gameTimestamps.append(gkVSbgTimestamp);
-     gameTimestamps.append(gkVSbgTimestamp1);
-     gameTimestamps.append(gkVSbgTimestamp2);
-     
-     gameMovesListDisplay.append(GarryKasparovVSBorisGulko);
-     gameMovesListDisplay.append(GarryKasparovVSBorisGulko1);
-     gameMovesListDisplay.append(GarryKasparovVSBorisGulko2);
-     
-     gameMovesList.append(GarryKasparovVSBorisGulko);
-     gameMovesList.append(GarryKasparovVSBorisGulko1);
-     gameMovesList.append(GarryKasparovVSBorisGulko2);
-    
-    
-   }
-   hasStarted = true;
-   if(gameList.size()>0){
-     int currLen = gameList.size();
-     indexGameChosen = int(random(0,currLen));
-     
-     String selectedName = gameList.get(indexGameChosen);
-     String selectedTimestamp = gameTimestamps.get(indexGameChosen);
-     String selectedOpening = gameOpenings.get(indexGameChosen);
-     
-     textSize(20);
-     fill(255);
-     text("A Queen's Gambit", 770, 50);
-     text("Generative Poster", 770, 85);
-     fill(255);
-     textSize(15);
-     text(selectedName, 770, 160);
-     textSize(10);
-     text(selectedTimestamp, 770, 180);
-     textSize(12);
-     text(selectedOpening, 770, 200);
-     textSize(20);
-     text("Move", 770, 300);
-   
+     }
    }
  }
  
-  /*if( millis() - lastTime > timeToWait){
-    startPosition();
-    lastTime = millis();
-  }*/
-  playOutGame(gameMovesList.get(indexGameChosen));
+ 
+ if(isPaused == false){
+   if(hasStarted == false){
+      image(positionText, 5+(boardWidth/16) ,520);
+      image(positionNumber, 520, 5+(boardHeight/16));
+     if(gameList.size() == 0){
+       gameList = new StringList();
+       gameList.append(gkVSbgGameName);
+       gameList.append(gkVSbgGameName1);
+       gameList.append(gkVSbgGameName2);
+       
+       
+       gameOpenings = new StringList();
+       gameOpenings.append(gkVSbgOpenings);
+       gameOpenings.append(gkVSbgOpenings1);
+       gameOpenings.append(gkVSbgOpenings2);
+       
+       
+       gameTimestamps = new StringList();      
+       gameTimestamps.append(gkVSbgTimestamp);
+       gameTimestamps.append(gkVSbgTimestamp1);
+       gameTimestamps.append(gkVSbgTimestamp2);
+       
+       gameMovesListDisplay = new StringList();
+       gameMovesListDisplay.append(gkVSbgMoves);
+       gameMovesListDisplay.append(gkVSbgMoves1);
+       gameMovesListDisplay.append(gkVSbgMoves2);
+       
+       gameMovesList = new StringList();
+       gameMovesList.append(GarryKasparovVSBorisGulko);
+       gameMovesList.append(GarryKasparovVSBorisGulko1);
+       gameMovesList.append(GarryKasparovVSBorisGulko2);
+       
+       gameResults = new IntList();
+       gameResults.append(gkVSbgResult);
+       gameResults.append(gkVSbgResult1);
+       gameResults.append(gkVSbgResult2);
+      
+      
+     }
+     hasStarted = true;
+     if(gameList.size()>0){
+       int currLen = gameList.size();
+       indexGameChosen = int(random(0,currLen));
+       
+       String selectedName = gameList.get(indexGameChosen);
+       String selectedTimestamp = gameTimestamps.get(indexGameChosen);
+       String selectedOpening = gameOpenings.get(indexGameChosen);
+       
+       textSize(30);
+       fill(255);
+       text("A Queen's Gambit", 770, 50);
+       text("Generative Poster", 770, 85);
+       fill(255);
+       textSize(20);
+       text(selectedName, 770, 160);
+       textSize(10);
+       text(selectedTimestamp, 770, 180);
+       textSize(12);
+       text(selectedOpening, 770, 200);
+       textSize(25);
+       text("Move", 770, 250);
+       textSize(25);
+       text("Currently playing", 770, 400);
+       textSize(20);
+       text(songNames.get(indexMusicChosen), 770, 440);
+     
+     }
+   }
+    playOutGame(gameMovesList.get(indexGameChosen));
+ }
+ else{
+   delay(2000);
+   timer=0;
+   background(0);
+   isPaused=false;
+   hasStarted=false;
+   startPosition();
+   showBoard();
+   
+ }
  
 }
 
@@ -251,45 +362,35 @@ void playOutGame(String game){
       }
     }
     fill(0);
-    rect(600, 300, 300, 20);
+    rect(600, 260, 300, 20);
     fill(255);
     textSize(20);
     String currentMove = getCurrentMove(timer);
-    text(currentMove, 770, 320);
+    text(currentMove, 770, 280);
     movePieceSE.play();
     movePiece(convert);
     timer++;
   }
   else{
-    if(gameResults.size() > 0){
       int getResult = gameResults.get(indexGameChosen);
-      print("getResult is:" + getResult);
       if(getResult == 0){
-        print("METI TEXTO");
         fill(255);
-        textSize(20);
+        textSize(30);
         fill(255);
-        text("Black Wins", 770, 400);
+        text("White Wins", 770, 320);
       }
       else{
-        print("METI TEXTO222");
         fill(255);
-        textSize(20);
-        text("White Wins", 770, 400);
+        textSize(30);
+        text("Black Wins", 770, 320);
       }
+        isPaused=true;
         gameList.remove(indexGameChosen);
         gameMovesList.remove(indexGameChosen);
         gameMovesListDisplay.remove(indexGameChosen);
         gameTimestamps.remove(indexGameChosen);
         gameOpenings.remove(indexGameChosen);
         gameResults.remove(indexGameChosen);
-    }
-    
-      timer=0;
-      background(0);
-      hasStarted=false;
-      startPosition();
-      showBoard();
   }
 }
 
