@@ -380,7 +380,7 @@ void draw() {
        text(musicAuthor, 770, 470);
        textSize(10);
        text(musicFrom, 770, 500);
-       text("e - increase frame rate | r - reset frame rate | p - pause current game", 250, 580);
+       text("e - increase game speed | r - reset game speed | p - pause current game", 250, 580);
        
      
      }
