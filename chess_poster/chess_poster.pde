@@ -81,8 +81,15 @@ String game3="D2d4 d7d5 c2c4 c7c6 b1c3 g8f6 g1f3 e7e6 e2e3 b8d7 f1d3 d5c4 d3c4 b
 String GameName3="Raymond Keene vs John N Sugden";
 String GameTimeStamp3="Match (1961), Dulwich (ENG)";
 String GameOpenings3="Semi-Slav Defense: Meran. Wade Variation";
-String GameMoves3= "d4 d5 c4 c6 Nc3 Nf6 Nf3 e6 e3 Nbd7 Bd3 dxc4 Bxc4 b5 Bd3 Bb7 e4 b4 Ne2 c5 Bg5 Qb6 d5 exd5 e5 Ng4 O-O Ngxe5 Nxe5 Nxe5 Bf5 Bd6 Nf4 h6 Qh5 hxg5 Qxh8+ Ke7 2Qxg7 gxf4 Rfe1 Qc7 Rxe5+ Bxe5 Re1 Qd6 Rxe5+ Kd8 Qg8+ Kc7 Qxf7+";
+String GameMoves3= "d4 d5 c4 c6 Nc3 Nf6 Nf3 e6 e3 Nbd7 Bd3 dxc4 Bxc4 b5 Bd3 Bb7 e4 b4 Ne2 c5 Bg5 Qb6 d5 exd5 e5 Ng4 O-O Ngxe5 Nxe5 Nxe5 Bf5 Bd6 Nf4 h6 Qh5 hxg5 Qxh8+ Ke7 Qxg7 gxf4 Rfe1 Qc7 Rxe5+ Bxe5 Re1 Qd6 Rxe5+ Kd8 Qg8+ Kc7 Qxf7+";
 int GameResult3=0;
+
+String game4="D2d4 d7d5 c2c4 e7e6 b1c3 f8e7 c4d5 e6d5 c1f4 g8f6 e2e3 0e8g8h8f8 f1d3 c7c5 g1f3 b8c6 0e1g1h1f1 c8g4 d4c5 e7c5 h2h3 g4f3 d1f3 d5d4 c3e4 c5e7 a1d1 d8a5 e4g3 d4e3 f2e3 a5a2 g3f5 a2e6 f4h6 f6e8 f3h5 g7g6 h5g4 d6e5 g4g3 e7f6 d3b5 e8g7 h6g7 f6g7 d1d6 e6b3 f5g7 b3b5 g7f5 a8d8 d6f6 d8d2 g3g5 b5b2 g1h1 g8h8 f5d4 d2d4 g5e5";
+String GameName4="Garry Kasparov vs Anatoly Karpov";
+String GameTimeStamp4="World Championship Rematch (1986), London ENG / Leningrad URS, rd 8, Aug-15";
+String GameOpenings4="Queen's Gambit Declined: Charousek (Petrosian) Variation";
+String GameMoves4="d4 d5 c4 e6 Nc3 Be7 cxd5 exd5 Bf4 Nf6 e3 O-O Bd3 c5 Nf3 Nc6 O-O Bg4 dxc5 Bxc5 h3 Bxf3 Qxf3 d4 Ne4 Be7 Rad1 Qa5 Ng3 dxe3 fxe3 Qxa2 Nf5 Qe6 Bh6 Ne8 Qh5 g6 Qg4 Ne5 Qg3 Bf6 Bb5 Ng7 Bxg7 Bxg7 Rd6 Qb3 Nxg7 Qxb5 Nf5 Rad8 Rf6 Rd2 Qg5 Qxb2 Kh1 Kh8 Nd4 Rxd4 Qxe5";
+int GameResult4=0;
 
 //LISTS
 StringList gameList;
@@ -115,36 +122,42 @@ void setup() {
   gameList.append(GameName1);
   gameList.append(GameName2);
   gameList.append(GameName3);
+  gameList.append(GameName4);
   
   gameMovesList = new StringList();
   gameMovesList.append(game);
   gameMovesList.append(game1);
   gameMovesList.append(game2);
   gameMovesList.append(game3);
+  gameMovesList.append(game4);
   
   gameMovesListDisplay = new StringList();
   gameMovesListDisplay.append(GameMoves);
   gameMovesListDisplay.append(GameMoves1);
   gameMovesListDisplay.append(GameMoves2);
   gameMovesListDisplay.append(GameMoves3);
+  gameMovesListDisplay.append(GameMoves4);
   
   gameTimestamps = new StringList();
   gameTimestamps.append(GameTimeStamp);
   gameTimestamps.append(GameTimeStamp1);
   gameTimestamps.append(GameTimeStamp2);
   gameTimestamps.append(GameTimeStamp3);
+  gameTimestamps.append(GameTimeStamp4);
   
   gameOpenings = new StringList();
   gameOpenings.append(GameOpenings);
   gameOpenings.append(GameOpenings1);
   gameOpenings.append(GameOpenings2);
   gameOpenings.append(GameOpenings3);
+  gameOpenings.append(GameOpenings4);
   
   gameResults = new IntList();
   gameResults.append(GameResult);
   gameResults.append(GameResult1);
   gameResults.append(GameResult2);
   gameResults.append(GameResult3);
+  gameResults.append(GameResult4);
   
   
   //
@@ -252,12 +265,22 @@ void draw() {
        songNames.append(ost2Name);
        songNames.append(ost3Name);
        songNames.append(ost4Name);
+       songNames.append(ost5Name);
+       songNames.append(ost6Name);
+       songNames.append(ost7Name);
+       songNames.append(ost8Name);
+       songNames.append(ost9Name);
       
        shuffleMusic = new StringList();
        shuffleMusic.append(ost1);
        shuffleMusic.append(ost2);
        shuffleMusic.append(ost3);
        shuffleMusic.append(ost4);
+       shuffleMusic.append(ost5);
+       shuffleMusic.append(ost6);
+       shuffleMusic.append(ost7);
+       shuffleMusic.append(ost8);
+       shuffleMusic.append(ost9);
       
        song.close();
        shuffleMusic.remove(indexMusicChosen);
@@ -283,6 +306,7 @@ void draw() {
        gameList.append(GameName1);
        gameList.append(GameName2);
        gameList.append(GameName3);
+       gameList.append(GameName4);
        
        
        gameOpenings = new StringList();
@@ -290,6 +314,7 @@ void draw() {
        gameOpenings.append(GameOpenings1);
        gameOpenings.append(GameOpenings2);
        gameOpenings.append(GameOpenings3);
+       gameOpenings.append(GameOpenings4);
        
        
        gameTimestamps = new StringList();      
@@ -297,24 +322,28 @@ void draw() {
        gameTimestamps.append(GameTimeStamp1);
        gameTimestamps.append(GameTimeStamp2);
        gameTimestamps.append(GameTimeStamp3);
+       gameTimestamps.append(GameTimeStamp4);
        
        gameMovesListDisplay = new StringList();
        gameMovesListDisplay.append(GameMoves);
        gameMovesListDisplay.append(GameMoves1);
        gameMovesListDisplay.append(GameMoves2);
        gameMovesListDisplay.append(GameMoves3);
+       gameMovesListDisplay.append(GameMoves4);
        
        gameMovesList = new StringList();
        gameMovesList.append(game);
        gameMovesList.append(game1);
        gameMovesList.append(game2);
        gameMovesList.append(game3);
+       gameMovesList.append(game4);
        
        gameResults = new IntList();
        gameResults.append(GameResult);
        gameResults.append(GameResult1);
        gameResults.append(GameResult2);
        gameResults.append(GameResult3);
+       gameResults.append(GameResult4);
       
       
      }
