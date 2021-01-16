@@ -10,9 +10,9 @@ AudioPlayer song;
 //Minim
 Minim minim;
 
+PImage[][] board;
 PFont font;
 PImage wKing, bKing, wQueen, bQueen, wPawn, bPawn, wRook, bRook, wKnight, bKnight, wBishop, bBishop, positionText, positionNumber;
-PImage[][] board;
 boolean isCastle = false;
 boolean hasStarted = false;
 boolean isPaused = false;
@@ -62,7 +62,7 @@ String GameOpenings = "Queen's Gambit Accepted: Classical Defense. Russian Gambi
 String GameMoves = "d4 d5 c4 dxc4 e3 Nf6 Bxc4 e6 Nf3 c5 O-O a6 e4 b5 Bd3 Bb7 Bg5 cxd4 Nxd4 Nbd7 Nc3 Ne5 Ncxb5 Nxd3 Qxd3 axb5 Rfd1 Be7 Qxb5+ Qd7 Qb3 Bxe4 Nf5 Bd5 Nxg7+ Kf8 Qh3 h5 Qg3 Kxg7 Bxf6+ Kxf6 Rd4 Bd6 Qc3 Kg6 h3 Bc7";
 int GameResult = 1; //0 - white wins 1 - black wins
 
-String game1 = "D2d4 d7d5 c2c4 e7e6 b1c3 g8f6 c1g5 b1d7 c4d5 e6d5 c3d5 f6d5 g5d8 f8b4 d1d2 e8d8";
+String game1 = "D2d4 d7d5 c2c4 e7e6 b1c3 g8f6 c1g5 b8d7 c4d5 e6d5 c3d5 f6d5 g5d8 f8b4 d1d2 e8d8";
 String GameName1 = "Karl Mayet vs Daniel Harrwitz";
 String GameTimeStamp1 = "The Oldest Trick in the Book - Berlin (1848), Berlin GER";
 String GameOpenings1 = "Queen's Gambit Declined: Modern. Knight Defense ";
@@ -70,12 +70,19 @@ String GameMoves1 = "d4 d5 c4 e6 Nc3 Nf6 Bg5 Nbd7 cxd5 exd5 Nxd5 Nxd5 Bxd8 Bb4+ 
 
 int GameResult1 = 1; //0 - white wins 1 - black wins
 
-String game2 = "D2d4 D7d5 C2c4 D5c4 E2e3 G8f6 F1c4 E7e6 G1f3 C7c5 0e1g1h1f1 A7a6 E3e4 B7b5 C3d3 C8b7 C1g5 C5d4 F3d4 B8d7 B1c3 D7e5 C3b5 E5d3 D1d3 A6b5 F1d1 F8e7 D3b5 D8d7 B5b3 B7e4 D4f5 E4d5 F5g7 E8f8 B3h3 H7h5 H3g3 F8g7 G5f6 G7f6 D1d4 E7d6 G3c3 F6g6 H2h3 D6c7";
-String GameName2 = "Garry Kasparov vs Ana Guiomar";
-String GameTimeStamp2 = "12th Soviet Team Cup (1982), Kislovodsk URS, rd 2, Jun-?? sampleeee ";
-String GameOpenings2 = "Queen's Gambit Declined: Modern. Knight Defense";
-String GameMoves2 = "d4 d5 c4 dxc4 e3 Nf6 Bxc4 e6 Nf3 c5 O-O a6 e4 b5 Bd3 Bb7 Bg5 cxd4 Nxd4 Nbd7 Nc3 Ne5 Ncxb5 Nxd3 Qxd3 axb5 Rfd1 Be7 Qxb5+ Qd7 Qb3 Bxe4 Nf5 Bd5 Nxg7+ Kf8 Qh3 h5 Qg3 Kxg7 Bxf6+ Kxf6 Rd4 Bd6 Qc3 Kg6 h3 Bc7";
+String game2 = "D2d4 d7d5 c2c4 c7c6 c4d5 c6d5 b1c3 g8f6 g1f3 c8f5 c1f4 e7e6 e2e3 b8d7 f3e5 f8b4 g2g4 b4c3 b2c3 d7e5 g4f5 e5c6 h1g1 e8f8 d1b3 d8d7 b3a3 c6e7 f5e6 d7e6 a1b1 f8f7 f1b5 e7c6 e1e2 a7a6 b5c6 d7c6 g1g7 f7g7 a3e7 g7g6 b1g1 g6h5 e7f7";
+String GameName2 = "Raymond Keene vs Kenneth J Bowyer";
+String GameTimeStamp2 = "London County Match (1963), ?, Sep-11";
+String GameOpenings2 = "Slav Defense: Exchange Variation";
+String GameMoves2 = "d4 d5 c4 c6 cxd5 cxd5 Nc3 Nf6 Nf3 Bf5 Bf4 e6 e3 Nbd7 Ne5 Bb4 g4 Bxc3+ bxc3 Nxe5 gxf5 Nc6 Rg1 Kf8 Qb3 Qd7 Qa3+ Ne7 fxe6 fxe6 Rb1 Kf7 Bb5 Nc6 Ke2 a6 Bxc6 Qxc6 Rxg7+ Kxg7 Qe7+ Kg6 Rg1+ Kh5 Qf7+";
 int GameResult2 = 0; //0 - white wins 1 - black wins
+
+String game3="D2d4 d7d5 c2c4 c7c6 b1c3 g8f6 g1f3 e7e6 e2e3 b8d7 f1d3 d5c4 d3c4 b7b5 c4d3 c8b7 e3e4 b5b4 c3e2 c6c5 c1g5 d8b6 d4d5 e6d5 e4e5 f6g4 0e1g1h1f1 g4e5 f3e5 d7e5 d3f5 f8d6 e2f4 h7h6 d1h5 h6g5 h5h8 e8e7 h8g7 g5f4 f1e1 b6c7 e1e5 d6e5 a1e1 c7d6 e1e5 e7d8 g7g8 d8c7 g8f7";
+String GameName3="Raymond Keene vs John N Sugden";
+String GameTimeStamp3="Match (1961), Dulwich (ENG)";
+String GameOpenings3="Semi-Slav Defense: Meran. Wade Variation";
+String GameMoves3= "d4 d5 c4 c6 Nc3 Nf6 Nf3 e6 e3 Nbd7 Bd3 dxc4 Bxc4 b5 Bd3 Bb7 e4 b4 Ne2 c5 Bg5 Qb6 d5 exd5 e5 Ng4 O-O Ngxe5 Nxe5 Nxe5 Bf5 Bd6 Nf4 h6 Qh5 hxg5 Qxh8+ Ke7 2Qxg7 gxf4 Rfe1 Qc7 Rxe5+ Bxe5 Re1 Qd6 Rxe5+ Kd8 Qg8+ Kc7 Qxf7+";
+int GameResult3=0;
 
 //LISTS
 StringList gameList;
@@ -107,31 +114,37 @@ void setup() {
   gameList.append(GameName);
   gameList.append(GameName1);
   gameList.append(GameName2);
+  gameList.append(GameName3);
   
   gameMovesList = new StringList();
   gameMovesList.append(game);
   gameMovesList.append(game1);
   gameMovesList.append(game2);
+  gameMovesList.append(game3);
   
   gameMovesListDisplay = new StringList();
   gameMovesListDisplay.append(GameMoves);
   gameMovesListDisplay.append(GameMoves1);
   gameMovesListDisplay.append(GameMoves2);
+  gameMovesListDisplay.append(GameMoves3);
   
   gameTimestamps = new StringList();
   gameTimestamps.append(GameTimeStamp);
   gameTimestamps.append(GameTimeStamp1);
   gameTimestamps.append(GameTimeStamp2);
+  gameTimestamps.append(GameTimeStamp3);
   
   gameOpenings = new StringList();
   gameOpenings.append(GameOpenings);
   gameOpenings.append(GameOpenings1);
   gameOpenings.append(GameOpenings2);
+  gameOpenings.append(GameOpenings3);
   
   gameResults = new IntList();
   gameResults.append(GameResult);
   gameResults.append(GameResult1);
   gameResults.append(GameResult2);
+  gameResults.append(GameResult3);
   
   
   //
@@ -228,7 +241,7 @@ void draw() {
        song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
        song.play();
        fill(0);
-       rect(600, 420, 300, 20);
+       rect(600, 420, 500, 20);
        fill(255);
        textSize(20);
        text(songNames.get(indexMusicChosen), 770, 440);
@@ -269,33 +282,39 @@ void draw() {
        gameList.append(GameName);
        gameList.append(GameName1);
        gameList.append(GameName2);
+       gameList.append(GameName3);
        
        
        gameOpenings = new StringList();
        gameOpenings.append(GameOpenings);
        gameOpenings.append(GameOpenings1);
        gameOpenings.append(GameOpenings2);
+       gameOpenings.append(GameOpenings3);
        
        
        gameTimestamps = new StringList();      
        gameTimestamps.append(GameTimeStamp);
        gameTimestamps.append(GameTimeStamp1);
        gameTimestamps.append(GameTimeStamp2);
+       gameTimestamps.append(GameTimeStamp3);
        
        gameMovesListDisplay = new StringList();
        gameMovesListDisplay.append(GameMoves);
        gameMovesListDisplay.append(GameMoves1);
        gameMovesListDisplay.append(GameMoves2);
+       gameMovesListDisplay.append(GameMoves3);
        
        gameMovesList = new StringList();
        gameMovesList.append(game);
        gameMovesList.append(game1);
        gameMovesList.append(game2);
+       gameMovesList.append(game3);
        
        gameResults = new IntList();
        gameResults.append(GameResult);
        gameResults.append(GameResult1);
        gameResults.append(GameResult2);
+       gameResults.append(GameResult3);
       
       
      }
