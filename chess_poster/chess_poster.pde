@@ -223,8 +223,10 @@ void draw() {
  //We need to generate a song for the first Time opening the program
  if(isFirstTime == true){
    int currLen = shuffleMusic.size();
-   indexMusicChosen = int(random(0, currLen));
+   //indexMusicChosen = int(random(0, currLen));
+   indexMusicChosen = 8;
    minim = new Minim(this);
+   //song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
    song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
    song.play();
    isFirstTime = false;
@@ -241,7 +243,7 @@ void draw() {
        song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
        song.play();
        fill(0);
-       rect(600, 420, 500, 20);
+       rect(550, 420, 600, 20);
        fill(255);
        textSize(20);
        text(songNames.get(indexMusicChosen), 770, 440);
@@ -329,7 +331,7 @@ void draw() {
        
        textSize(30);
        fill(255);
-       text("A Queen's Gambit", 740, 50);
+       text("A Queen's Gambit", 770, 50);
        text("Generative Poster", 770, 85);
        fill(255);
        textSize(10);
