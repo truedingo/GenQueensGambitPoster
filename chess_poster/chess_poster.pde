@@ -223,10 +223,8 @@ void draw() {
  //We need to generate a song for the first Time opening the program
  if(isFirstTime == true){
    int currLen = shuffleMusic.size();
-   //indexMusicChosen = int(random(0, currLen));
-   indexMusicChosen = 8;
+   indexMusicChosen = int(random(0, currLen));
    minim = new Minim(this);
-   //song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
    song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
    song.play();
    isFirstTime = false;
