@@ -87,7 +87,7 @@ long lastTime;
 void setup() {
   size(1000, 600);
   background(0);
-  frameRate(10);
+  frameRate(1);
   noStroke();
   textSize(width/8);
   textAlign(CENTER);
@@ -231,6 +231,11 @@ void draw() {
        minim = new Minim(this);
        song = minim.loadFile(shuffleMusic.get(indexMusicChosen));
        song.play();
+       
+       textSize(20);
+       text(songNames.get(indexMusicChosen), 770, 440);
+       
+       
       
      
      }
@@ -303,6 +308,11 @@ void draw() {
        text("Currently playing", 770, 400);
        textSize(20);
        text(songNames.get(indexMusicChosen), 770, 440);
+       textSize(15);
+       text(musicAuthor, 770, 470);
+       textSize(10);
+       text(musicFrom, 770, 500);
+       
      
      }
    }
